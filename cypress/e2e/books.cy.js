@@ -5,30 +5,22 @@ describe("books list", () => {
   });
 
   it("Should successfully create new book", () => {
-    cy.createBook('', '', 'Б')
-    cy.contains('A').should('be.visible')
-    cy.contains('Б').should('be.visible')
+    cy.createBook("Мастер и Маргарита", "Великая книга", "Булгаков");
+    cy.contains("Мастер и Маргарита").should("be.visible");
+    cy.contains("Булгаков").should("be.visible");
+  });
+
+  it("Should add book to favorites", () => {
+    cy.contains("Add to favorite").click();
+    cy.get("h4").click();
+    cy.contains("Мастер и Маргарита").should("be.visible");
+    cy.contains("Булгаков").should("be.visible");
+  });
+
+  it("Should delete book from favorites", () => {
+    cy.get("h4").click();
+    cy.contains("Delete from favorite").click();
+    cy.contains("Мастер и Маргарита").should("not.exist");
+    cy.contains("Булгаков").should("not.exist");
   });
 });
-
-describe("favorits", () => {
-    beforeEach(() => {
-      cy.visit("/");
-      cy.login("bropet@mail.ru", "123");
-      cy.createBook('A', '', 'Б')
-    });
-  
-    it("Should add book to favorites", () => {
-    cy.contains('Add to favorite').click()
-    cy.get('h4').click()
-    cy.contains('A').should('be.visible')
-    cy.contains('Б').should('be.visible')
-    });
-
-    it("Should delete book from favorites", () => {
-        cy.get('h4').click()
-        cy.contains('Delete from favorite').click()
-        cy.contains('A').should('not.exist')
-        cy.contains('Б').should('not.exist')
-        });
-  });
